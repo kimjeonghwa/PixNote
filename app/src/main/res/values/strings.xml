@@ -1,0 +1,4 @@
+<resources>
+	<string name="app_name">PixNote</string>
+	<string name="note_title_edit">Enter your title here</string>
+</resources>
