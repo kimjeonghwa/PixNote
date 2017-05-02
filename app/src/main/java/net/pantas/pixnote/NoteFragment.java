@@ -51,7 +51,7 @@ public class NoteFragment extends Fragment {
 
 	private void setViewsFromModel() {
 		mTitleEdit.setText(mNote.getTitle());
-		mDateButton.setText(DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(mNote.getDate()));
+		mDateButton.setText(mNote.getFormattedDate());
 		mDateButton.setEnabled(false);
 		mActiveCheckbox.setChecked(mNote.isActive());
 	}

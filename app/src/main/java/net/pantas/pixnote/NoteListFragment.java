@@ -1,6 +1,5 @@
 package net.pantas.pixnote;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,16 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class NoteListFragment extends Fragment {
-	@BindView(R.id.notes_recycler_view) RecyclerView mRecyclerView;
+	@BindView(R.id.notes_recycler_view)
+	RecyclerView mRecyclerView;
 	NoteAdapter mNoteAdapter;
 
 	@Override
@@ -41,34 +41,47 @@ public class NoteListFragment extends Fragment {
 		mRecyclerView.setAdapter(mNoteAdapter);
 	}
 
-	private class NoteViewHolder extends RecyclerView.ViewHolder {
-		private TextView mTitleTextView;
+	class NoteViewHolder extends RecyclerView.ViewHolder {
+		@BindView(R.id.list_item_note_title)
+		TextView mTitleTextView;
 
-		public NoteViewHolder(View itemView) {
+		@BindView(R.id.list_item_note_date)
+		TextView mDateTextView;
+
+		@BindView(R.id.list_item_note_active)
+		CheckBox mActiveCheckBox;
+
+		NoteViewHolder(View itemView) {
 			super(itemView);
 
-			mTitleTextView = (TextView) itemView;
+			ButterKnife.bind(this, itemView);
+		}
+
+		void bindNote(Note note) {
+			mTitleTextView.setText(note.getTitle());
+			mDateTextView.setText(note.getFormattedDate());
+			mActiveCheckBox.setChecked(note.isActive());
 		}
 	}
 
 	private class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
 		private final List<Note> mNotes;
 
-		public NoteAdapter(List<Note> notes) {
+		NoteAdapter(List<Note> notes) {
 			mNotes = notes;
 		}
 
 		@Override
 		public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			LayoutInflater inflater = LayoutInflater.from(getActivity());
-			View view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+			View view = inflater.inflate(R.layout.list_item_note, parent, false);
 			return new NoteViewHolder(view);
 		}
 
 		@Override
 		public void onBindViewHolder(NoteViewHolder holder, int position) {
 			Note note = mNotes.get(position);
-			holder.mTitleTextView.setText(note.getTitle());
+			holder.bindNote(note);
 		}
 
 		@Override

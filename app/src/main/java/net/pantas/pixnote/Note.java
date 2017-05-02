@@ -1,5 +1,6 @@
 package net.pantas.pixnote;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,5 +42,9 @@ public class Note {
 
 	public void setActive(boolean active) {
 		mActive = active;
+	}
+
+	public String getFormattedDate() {
+		return DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(getDate());
 	}
 }
