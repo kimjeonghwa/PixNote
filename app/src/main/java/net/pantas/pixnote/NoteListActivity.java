@@ -2,9 +2,9 @@ package net.pantas.pixnote;
 
 import android.support.v4.app.Fragment;
 
-public class NoteActivity extends SingleFragmentActivity {
+public class NoteListActivity extends SingleFragmentActivity {
 	@Override
 	protected Fragment createFragment() {
-		return new NoteFragment();
+		return new NoteListFragment();
 	}
 }
