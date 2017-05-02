@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,7 +42,7 @@ public class NoteListFragment extends Fragment {
 		mRecyclerView.setAdapter(mNoteAdapter);
 	}
 
-	class NoteViewHolder extends RecyclerView.ViewHolder {
+	class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		@BindView(R.id.list_item_note_title)
 		TextView mTitleTextView;
 
@@ -51,16 +52,30 @@ public class NoteListFragment extends Fragment {
 		@BindView(R.id.list_item_note_active)
 		CheckBox mActiveCheckBox;
 
+		private Note mNote;
+
 		NoteViewHolder(View itemView) {
 			super(itemView);
 
 			ButterKnife.bind(this, itemView);
+
+			itemView.setOnClickListener(this);
 		}
 
 		void bindNote(Note note) {
+			mNote = note;
 			mTitleTextView.setText(note.getTitle());
 			mDateTextView.setText(note.getFormattedDate());
 			mActiveCheckBox.setChecked(note.isActive());
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (mNote == null) {
+				return;
+			}
+
+			Toast.makeText(getActivity(), "Clicked note " + mNote.getId() + ": " + mNote.getTitle(), Toast.LENGTH_SHORT).show();
 		}
 	}
 
