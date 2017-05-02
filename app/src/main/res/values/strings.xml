@@ -1,4 +1,7 @@
 <resources>
 	<string name="app_name">PixNote</string>
 	<string name="note_title_edit">Enter your title here</string>
+	<string name="note_title_edit_label">Title</string>
+	<string name="note_details_label">Details</string>
+	<string name="note_active_checkbox_label">Active</string>
 </resources>

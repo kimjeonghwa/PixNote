@@ -1,13 +1,18 @@
 package net.pantas.pixnote;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Note {
 	private UUID mId;
 	private String mTitle;
+	private Date mDate;
+	private boolean mActive;
 
 	public Note() {
 		mId = UUID.randomUUID();
+		mDate = new Date();
+		mActive = true;
 	}
 
 	public UUID getId() {
@@ -20,5 +25,21 @@ public class Note {
 
 	public void setTitle(String title) {
 		mTitle = title;
+	}
+
+	public Date getDate() {
+		return mDate;
+	}
+
+	public void setDate(Date date) {
+		mDate = date;
+	}
+
+	public boolean isActive() {
+		return mActive;
+	}
+
+	public void setActive(boolean active) {
+		mActive = active;
 	}
 }
