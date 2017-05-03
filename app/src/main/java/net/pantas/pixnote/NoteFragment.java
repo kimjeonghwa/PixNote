@@ -1,5 +1,7 @@
 package net.pantas.pixnote;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,11 +17,11 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnTextChanged;
 
-import java.text.DateFormat;
 import java.util.UUID;
 
 public class NoteFragment extends Fragment {
 	private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
+	private static final String EXTRA_NOTE_ID = "net.pantas.pixnote.EXTRA_NOTE_ID";
 
 	private Note mNote;
 
@@ -33,6 +35,10 @@ public class NoteFragment extends Fragment {
 
 		UUID noteId = (UUID) getArguments().getSerializable(ARG_NOTE_ID);
 		mNote = Container.instance(getActivity()).getNoteManager().get(noteId);
+
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra(EXTRA_NOTE_ID, mNote.getId());
+		getActivity().setResult(Activity.RESULT_OK, resultIntent);
 	}
 
 	@Override
@@ -67,5 +73,17 @@ public class NoteFragment extends Fragment {
 		NoteFragment fragment = new NoteFragment();
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	public static UUID getChangedUUID(int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK) {
+			return null;
+		}
+
+		if (!data.hasExtra(EXTRA_NOTE_ID)) {
+			return null;
+		}
+
+		return (UUID) data.getSerializableExtra(EXTRA_NOTE_ID);
 	}
 }

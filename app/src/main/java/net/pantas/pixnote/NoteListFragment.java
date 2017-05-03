@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,15 @@ import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class NoteListFragment extends Fragment {
+	private static final int REQUEST_NOTE = 1;
+
 	@BindView(R.id.notes_recycler_view)
 	RecyclerView mRecyclerView;
 	NoteAdapter mNoteAdapter;
+	private UUID mUpdatedNoteId = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,6 +38,15 @@ public class NoteListFragment extends Fragment {
 		updateUI();
 
 		return view;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_NOTE) {
+			mUpdatedNoteId = NoteFragment.getChangedUUID(resultCode, data);
+		}
 	}
 
 	@Override
@@ -49,8 +63,9 @@ public class NoteListFragment extends Fragment {
 		if (mNoteAdapter == null) {
 			mNoteAdapter = new NoteAdapter(notes);
 			mRecyclerView.setAdapter(mNoteAdapter);
-		} else {
-			mNoteAdapter.notifyDataSetChanged();
+		}
+		else if (mUpdatedNoteId != null) {
+			mNoteAdapter.notifyNoteChanged(mUpdatedNoteId);
 		}
 	}
 
@@ -87,8 +102,9 @@ public class NoteListFragment extends Fragment {
 				return;
 			}
 
+			mUpdatedNoteId = null;
 			Intent intent = NoteActivity.newIntent(getActivity(), mNote.getId());
-			startActivity(intent);
+			startActivityForResult(intent, REQUEST_NOTE);
 		}
 	}
 
@@ -97,6 +113,18 @@ public class NoteListFragment extends Fragment {
 
 		NoteAdapter(List<Note> notes) {
 			mNotes = notes;
+		}
+
+		void notifyNoteChanged(UUID id) {
+			for (int i = 0; i < mNotes.size(); i++) {
+				if (mNotes.get(i).getId() == id) {
+					notifyItemChanged(i);
+					return;
+				}
+			}
+
+			// We don't have this id, better reload all, just in case
+			notifyDataSetChanged();
 		}
 
 		@Override

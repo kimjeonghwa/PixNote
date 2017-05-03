@@ -23,14 +23,15 @@ class NoteManager {
 		return list;
 	}
 
+	Note get(UUID id) {
+		return mNotes.get(id);
+	}
+
 	private class NoteComparator implements Comparator<Note> {
 		@Override
 		public int compare(Note o1, Note o2) {
 			return o1.getTitle().compareTo(o2.getTitle());
 		}
-	}
 
-	public Note get(UUID id) {
-		return mNotes.get(id);
 	}
 }
