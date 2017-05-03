@@ -1,5 +1,6 @@
 package net.pantas.pixnote;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,12 +35,23 @@ public class NoteListFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		updateUI();
+	}
+
 	private void updateUI() {
 		NoteManager noteManager = Container.instance(getActivity()).getNoteManager();
 		ArrayList<Note> notes = noteManager.list();
 
-		mNoteAdapter = new NoteAdapter(notes);
-		mRecyclerView.setAdapter(mNoteAdapter);
+		if (mNoteAdapter == null) {
+			mNoteAdapter = new NoteAdapter(notes);
+			mRecyclerView.setAdapter(mNoteAdapter);
+		} else {
+			mNoteAdapter.notifyDataSetChanged();
+		}
 	}
 
 	class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,7 +87,8 @@ public class NoteListFragment extends Fragment {
 				return;
 			}
 
-			Toast.makeText(getActivity(), "Clicked note " + mNote.getId() + ": " + mNote.getTitle(), Toast.LENGTH_SHORT).show();
+			Intent intent = NoteActivity.newIntent(getActivity(), mNote.getId());
+			startActivity(intent);
 		}
 	}
 

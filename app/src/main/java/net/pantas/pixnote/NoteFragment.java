@@ -16,8 +16,11 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnTextChanged;
 
 import java.text.DateFormat;
+import java.util.UUID;
 
 public class NoteFragment extends Fragment {
+	private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
+
 	private Note mNote;
 
 	@BindView(R.id.note_title_edit) protected EditText mTitleEdit;
@@ -28,7 +31,8 @@ public class NoteFragment extends Fragment {
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mNote = new Note();
+		UUID noteId = (UUID) getArguments().getSerializable(ARG_NOTE_ID);
+		mNote = Container.instance(getActivity()).getNoteManager().get(noteId);
 	}
 
 	@Override
@@ -54,5 +58,14 @@ public class NoteFragment extends Fragment {
 		mDateButton.setText(mNote.getFormattedDate());
 		mDateButton.setEnabled(false);
 		mActiveCheckbox.setChecked(mNote.isActive());
+	}
+
+	public static NoteFragment newInstance(UUID id) {
+		Bundle args = new Bundle();
+		args.putSerializable(ARG_NOTE_ID, id);
+
+		NoteFragment fragment = new NoteFragment();
+		fragment.setArguments(args);
+		return fragment;
 	}
 }
