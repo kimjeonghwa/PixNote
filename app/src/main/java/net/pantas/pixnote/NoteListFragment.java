@@ -103,7 +103,7 @@ public class NoteListFragment extends Fragment {
 			}
 
 			mUpdatedNoteId = null;
-			Intent intent = NoteActivity.newIntent(getActivity(), mNote.getId());
+			Intent intent = NotePagerActivity.newIntent(getActivity(), mNote.getId());
 			startActivityForResult(intent, REQUEST_NOTE);
 		}
 	}
@@ -117,7 +117,7 @@ public class NoteListFragment extends Fragment {
 
 		void notifyNoteChanged(UUID id) {
 			for (int i = 0; i < mNotes.size(); i++) {
-				if (mNotes.get(i).getId() == id) {
+				if (mNotes.get(i).getId().equals(id)) {
 					notifyItemChanged(i);
 					return;
 				}
