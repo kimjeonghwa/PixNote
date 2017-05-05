@@ -3,25 +3,30 @@ package net.pantas.pixnote;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class NotePagerActivity extends FragmentActivity {
+public class NotePagerActivity extends AppCompatActivity {
 	private static final String EXTRA_NOTE_ID = "net.pantas.pixnote.EXTRA_NOTE_ID";
 
 	@BindView(R.id.activity_note_pager_view_pager)
 	ViewPager mViewPager;
 
 	private ArrayList<Note> mNotes;
+
+	public static Intent newIntent(Context packageContext, UUID id) {
+		Intent intent = new Intent(packageContext, NotePagerActivity.class);
+		intent.putExtra(EXTRA_NOTE_ID, id);
+		return intent;
+	}
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,11 +56,5 @@ public class NotePagerActivity extends FragmentActivity {
 				break;
 			}
 		}
-	}
-
-	public static Intent newIntent(Context packageContext, UUID id) {
-		Intent intent = new Intent(packageContext, NotePagerActivity.class);
-		intent.putExtra(EXTRA_NOTE_ID, id);
-		return intent;
 	}
 }
