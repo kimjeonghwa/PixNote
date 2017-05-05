@@ -5,4 +5,9 @@
 	<string name="note_details_label">Details</string>
 	<string name="note_active_checkbox_label">Active</string>
 	<string name="date_picker_title">Select a date</string>
+
+	<string name="menu_new_note">New note</string>
+	<string name="menu_show_subtitle">Show subtitle</string>
+	<string name="menu_hide_subtitle">Hide subtitle</string>
+	<string name="menu_subtitle_format">%1$d notes</string>
 </resources>

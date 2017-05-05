@@ -7,14 +7,6 @@ class NoteManager {
 
 	NoteManager() {
 		mNotes = new HashMap<>();
-
-		// TODO: Testing
-		for (int i = 0; i < 100; i++) {
-			Note note = new Note();
-			note.setActive(i % 2 == 0);
-			note.setTitle("Note #" + i);
-			mNotes.put(note.getId(), note);
-		}
 	}
 
 	ArrayList<Note> list() {
@@ -27,9 +19,23 @@ class NoteManager {
 		return mNotes.get(id);
 	}
 
+	void add(Note note) {
+		mNotes.put(note.getId(), note);
+	}
+
+	int size() {
+		return mNotes.size();
+	}
+
 	private class NoteComparator implements Comparator<Note> {
 		@Override
 		public int compare(Note o1, Note o2) {
+			if (o1.getTitle() == null) {
+				return 1;
+			}
+			if (o2.getTitle() == null) {
+				return -1;
+			}
 			return o1.getTitle().compareTo(o2.getTitle());
 		}
 

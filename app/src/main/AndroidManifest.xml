@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	package="net.pantas.pixnote">
 
 	<application
@@ -16,7 +17,10 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".NotePagerActivity" />
+		<activity android:name=".NotePagerActivity"
+			android:label="@string/app_name"
+			android:parentActivityName=".NoteListActivity"
+			tools:targetApi="jelly_bean" />
 	</application>
 
 </manifest>
