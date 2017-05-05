@@ -26,7 +26,6 @@ public class NoteListFragment extends Fragment {
 	@BindView(R.id.notes_recycler_view)
 	RecyclerView mRecyclerView;
 	NoteAdapter mNoteAdapter;
-	private UUID mUpdatedNoteId = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,15 +37,6 @@ public class NoteListFragment extends Fragment {
 		updateUI();
 
 		return view;
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == REQUEST_NOTE) {
-			mUpdatedNoteId = NoteFragment.getChangedUUID(resultCode, data);
-		}
 	}
 
 	@Override
@@ -63,9 +53,8 @@ public class NoteListFragment extends Fragment {
 		if (mNoteAdapter == null) {
 			mNoteAdapter = new NoteAdapter(notes);
 			mRecyclerView.setAdapter(mNoteAdapter);
-		}
-		else if (mUpdatedNoteId != null) {
-			mNoteAdapter.notifyNoteChanged(mUpdatedNoteId);
+		} else {
+			mNoteAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -102,7 +91,6 @@ public class NoteListFragment extends Fragment {
 				return;
 			}
 
-			mUpdatedNoteId = null;
 			Intent intent = NotePagerActivity.newIntent(getActivity(), mNote.getId());
 			startActivityForResult(intent, REQUEST_NOTE);
 		}
@@ -113,18 +101,6 @@ public class NoteListFragment extends Fragment {
 
 		NoteAdapter(List<Note> notes) {
 			mNotes = notes;
-		}
-
-		void notifyNoteChanged(UUID id) {
-			for (int i = 0; i < mNotes.size(); i++) {
-				if (mNotes.get(i).getId().equals(id)) {
-					notifyItemChanged(i);
-					return;
-				}
-			}
-
-			// We don't have this id, better reload all, just in case
-			notifyDataSetChanged();
 		}
 
 		@Override

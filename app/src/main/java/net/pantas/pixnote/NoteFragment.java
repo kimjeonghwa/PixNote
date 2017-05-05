@@ -19,7 +19,6 @@ import java.util.UUID;
 
 public class NoteFragment extends Fragment {
 	private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
-	private static final String EXTRA_NOTE_ID = "net.pantas.pixnote.EXTRA_NOTE_ID";
 	private static final String DIALOG_DATE_TAG = "DIALOG_DATE_TAG";
 	private static final int REQUEST_DATE = 0;
 
@@ -35,10 +34,6 @@ public class NoteFragment extends Fragment {
 
 		UUID noteId = (UUID) getArguments().getSerializable(ARG_NOTE_ID);
 		mNote = Container.instance(getActivity()).getNoteManager().get(noteId);
-
-		Intent resultIntent = new Intent();
-		resultIntent.putExtra(EXTRA_NOTE_ID, mNote.getId());
-		getActivity().setResult(Activity.RESULT_OK, resultIntent);
 	}
 
 	@Override
@@ -90,17 +85,5 @@ public class NoteFragment extends Fragment {
 		NoteFragment fragment = new NoteFragment();
 		fragment.setArguments(args);
 		return fragment;
-	}
-
-	public static UUID getChangedUUID(int resultCode, Intent data) {
-		if (resultCode != Activity.RESULT_OK) {
-			return null;
-		}
-
-		if (!data.hasExtra(EXTRA_NOTE_ID)) {
-			return null;
-		}
-
-		return (UUID) data.getSerializableExtra(EXTRA_NOTE_ID);
 	}
 }
