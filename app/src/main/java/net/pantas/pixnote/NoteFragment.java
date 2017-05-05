@@ -12,16 +12,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnTextChanged;
+import butterknife.*;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class NoteFragment extends Fragment {
 	private static final String ARG_NOTE_ID = "ARG_NOTE_ID";
 	private static final String EXTRA_NOTE_ID = "net.pantas.pixnote.EXTRA_NOTE_ID";
+	private static final String DIALOG_DATE_TAG = "DIALOG_DATE_TAG";
+	private static final int REQUEST_DATE = 0;
 
 	private Note mNote;
 
@@ -49,6 +49,17 @@ public class NoteFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_DATE) {
+			Date date = DatePickerFragment.getResultDate(resultCode, data);
+			mNote.setDate(date);
+			setViewsFromModel();
+		}
+	}
+
 	@OnTextChanged(R.id.note_title_edit)
 	public void onNoteTitleEditChanged(CharSequence s, int start, int before, int count) {
 		mNote.setTitle(s.toString());
@@ -62,8 +73,14 @@ public class NoteFragment extends Fragment {
 	private void setViewsFromModel() {
 		mTitleEdit.setText(mNote.getTitle());
 		mDateButton.setText(mNote.getFormattedDate());
-		mDateButton.setEnabled(false);
 		mActiveCheckbox.setChecked(mNote.isActive());
+	}
+
+	@OnClick(R.id.note_date_btn)
+	public void onDateClick(View view) {
+		DatePickerFragment dialogFragment = DatePickerFragment.newInstance(mNote.getDate());
+		dialogFragment.setTargetFragment(this, REQUEST_DATE);
+		dialogFragment.show(getFragmentManager(), DIALOG_DATE_TAG);
 	}
 
 	public static NoteFragment newInstance(UUID id) {

@@ -4,4 +4,5 @@
 	<string name="note_title_edit_label">Title</string>
 	<string name="note_details_label">Details</string>
 	<string name="note_active_checkbox_label">Active</string>
+	<string name="date_picker_title">Select a date</string>
 </resources>
