@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
+import net.pantas.pixnote.data.NotesDbSchema;
 import net.pantas.pixnote.data.NotesDbSchema.NotesTable;
 import net.pantas.pixnote.data.PixNoteBaseHelper;
 
@@ -63,7 +64,14 @@ class NoteManager {
 	}
 
 	int size() {
-		return 0;
+		Cursor cursor = mDatabase.rawQuery("select count(*) from " + NotesTable.NAME, null);
+		try {
+			cursor.moveToFirst();
+			return cursor.getInt(0);
+		}
+		finally {
+			cursor.close();
+		}
 	}
 
 	private NoteCursorWrapper queryNotes(String whereClause, String[] whereArgs) {
