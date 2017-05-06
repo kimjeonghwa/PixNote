@@ -11,7 +11,11 @@ public class Note {
 	private boolean mActive;
 
 	public Note() {
-		mId = UUID.randomUUID();
+		this(UUID.randomUUID());
+	}
+
+	public Note(UUID id) {
+		mId = id;
 		mDate = new Date();
 		mActive = true;
 	}

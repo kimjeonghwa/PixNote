@@ -14,7 +14,7 @@ public class Container {
 	}
 
 	private Container(Context context) {
-		mNoteManager = new NoteManager();
+		mNoteManager = new NoteManager(context);
 	}
 
 	public NoteManager getNoteManager() {

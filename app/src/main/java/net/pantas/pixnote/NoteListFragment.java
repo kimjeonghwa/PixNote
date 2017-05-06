@@ -3,7 +3,6 @@ package net.pantas.pixnote;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +31,10 @@ public class NoteListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+
+		if (savedInstanceState != null) {
+			mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+		}
 	}
 
 	@Override
@@ -40,10 +43,6 @@ public class NoteListFragment extends Fragment {
 		ButterKnife.bind(NoteListFragment.this, view);
 
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-		if (savedInstanceState != null) {
-			mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
-		}
 
 		updateUI();
 

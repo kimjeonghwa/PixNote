@@ -55,6 +55,13 @@ public class NoteFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		Container.instance(getActivity()).getNoteManager().update(mNote);
+	}
+
 	@OnTextChanged(R.id.note_title_edit)
 	public void onNoteTitleEditChanged(CharSequence s, int start, int before, int count) {
 		mNote.setTitle(s.toString());
